@@ -15,6 +15,7 @@ FetchContent_Declare(fmt
 FetchContent_MakeAvailable(fmt)
 
 add_executable(luxlab
+  include/luxlab/rational.hpp
   include/luxlab/tag_data_format.hpp
   include/luxlab/tag_type.hpp
   include/luxlab/byte_order.hpp

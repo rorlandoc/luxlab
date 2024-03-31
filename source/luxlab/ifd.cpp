@@ -28,6 +28,11 @@ IFD::IFD(int id, std::span<std::byte> data, int offset, ByteOrder byte_order)
     // get entries
     for (int ientry = 0; ientry < num_entries; ++ientry) {
         Tag tag{{current_byte, 12}, m_byte_order};
+        if (tag.has_offset()) {
+            auto offset = std::get<uint32_t>(tag.values()[0]);
+            tag.initialize_value(
+                {data.begin() + offset, static_cast<size_t>(tag.data_size())});
+        }
         m_tags[tag.type()] = tag;
         current_byte += 12;
     }
@@ -48,15 +53,16 @@ format_context::iterator formatter<luxlab::IFD>::format(const luxlab::IFD &ifd,
     str += pad;
     str += fmt::format("IFD {} [{} entries]", ifd.id(), ifd.num_entries());
 
+    std::string tag_fmt = "{:" + fmt::format("{}", m_padding + 1) + "}";
     for (const auto &[_, tag] : ifd.tags()) {
-        str += "\n" + pad;
-        str += fmt::format("|    Tag 0x{:04X} - {}", tag.type_id(), tag.type());
-        str += "\n" + pad;
-        str += fmt::format("|    |    Format : {} x {}", tag.components(), tag.format());
-        str += "\n" + pad;
-        str += fmt::format("|    |    Size   : {} bytes", tag.data_size());
-        str += "\n" + pad;
-        str += fmt::format("|    |    Value  : 0x{:08X}", tag.value());
+        str += fmt::format(fmt::runtime(tag_fmt), tag);
+        // str += "\n" + pad;
+        // str += fmt::format("|    Tag 0x{:04X} - {}", tag.type_id(), tag.type());
+        // str += "\n" + pad;
+        // str += fmt::format("|    |    Format : {} x {}", tag.components(),
+        // tag.format()); str += "\n" + pad; str += fmt::format("|    |    Size   : {}
+        // bytes", tag.data_size()); str += "\n" + pad; str += fmt::format("|    | Value
+        // : 0x{:08X}", tag.value());
     }
 
     return format_to(ctx.out(), "{}", str);

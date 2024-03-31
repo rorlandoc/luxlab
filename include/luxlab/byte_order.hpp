@@ -3,6 +3,8 @@
 
 #include <fmt/core.h>
 
+#include <algorithm>
+#include <bit>
 #include <cstddef>
 #include <span>
 
@@ -20,7 +22,58 @@ class ByteOrder {
 
     constexpr int id() const { return static_cast<int>(m_endianness); }
 
-    int calculate(std::span<const std::byte> data);
+    template <typename T = int>
+    T calculate(std::span<const std::byte> data) {
+        T value = T{};
+        if (m_endianness == Endianness::LITTLE_ENDIAN) {
+            int shift = 0;
+            for (const auto& byte : data) {
+                value += (static_cast<T>(byte) << shift);
+                shift += 8;
+            }
+        } else {
+            int shift = (data.size() - 1) * 8;
+            for (const auto& byte : data) {
+                value += (static_cast<T>(byte) << shift);
+                shift -= 8;
+            }
+        }
+        return value;
+    }
+
+    template <>
+    std::string calculate(std::span<const std::byte> data) {
+        std::string value = "";
+        if (m_endianness == Endianness::LITTLE_ENDIAN) {
+            for (const auto& byte : data) {
+                char c = static_cast<char>(byte);
+                if (c == '\0') {
+                    break;
+                }
+                value += fmt::format("{}", c);
+            }
+        } else {
+            for (const auto& byte : data) {
+                char c = static_cast<char>(byte);
+                if (c == '\0') {
+                    break;
+                }
+                value += fmt::format("{:c}", byte);
+            }
+            std::reverse(value.begin(), value.end());
+        }
+        return value;
+    }
+
+    template <>
+    float calculate(std::span<const std::byte> data) {
+        return std::bit_cast<float>(calculate<uint32_t>(data));
+    }
+
+    template <>
+    double calculate(std::span<const std::byte> data) {
+        return std::bit_cast<double>(calculate<uint64_t>(data));
+    }
 
    private:
     Endianness m_endianness;

@@ -49,4 +49,49 @@ format_context::iterator formatter<luxlab::TagDataFormat>::format(
     return formatter<std::string>::format(str, ctx);
 }
 
+format_context::iterator formatter<luxlab::TagValue>::format(
+    const luxlab::TagValue& tag_value, format_context& ctx) const {
+    std::string str = "Unknown";
+
+    if (std::holds_alternative<uint8_t>(tag_value)) {
+        auto val = std::get<uint8_t>(tag_value);
+        str = fmt::format("0x{:02X}", val);
+    } else if (std::holds_alternative<std::string>(tag_value)) {
+        auto val = std::get<std::string>(tag_value);
+        str = fmt::format("{}", val);
+    } else if (std::holds_alternative<uint16_t>(tag_value)) {
+        auto val = std::get<uint16_t>(tag_value);
+        str = fmt::format("{}", val);
+    } else if (std::holds_alternative<uint32_t>(tag_value)) {
+        auto val = std::get<uint32_t>(tag_value);
+        str = fmt::format("{}", val);
+    } else if (std::holds_alternative<luxlab::UnsignedRational>(tag_value)) {
+        auto val = std::get<luxlab::UnsignedRational>(tag_value);
+        str = fmt::format("{}/{}", val.numerator, val.denominator);
+    } else if (std::holds_alternative<int8_t>(tag_value)) {
+        auto val = std::get<int8_t>(tag_value);
+        str = fmt::format("0x{:02x}", val);
+    } else if (std::holds_alternative<std::byte>(tag_value)) {
+        auto val = std::get<std::byte>(tag_value);
+        str = fmt::format("0x{:02X}", static_cast<int>(val));
+    } else if (std::holds_alternative<int16_t>(tag_value)) {
+        auto val = std::get<int16_t>(tag_value);
+        str = fmt::format("{}", val);
+    } else if (std::holds_alternative<int32_t>(tag_value)) {
+        auto val = std::get<int32_t>(tag_value);
+        str = fmt::format("{}", val);
+    } else if (std::holds_alternative<luxlab::SignedRational>(tag_value)) {
+        auto val = std::get<luxlab::SignedRational>(tag_value);
+        str = fmt::format("{}/{}", val.numerator, val.denominator);
+    } else if (std::holds_alternative<float>(tag_value)) {
+        auto val = std::get<float>(tag_value);
+        str = fmt::format("{}", val);
+    } else if (std::holds_alternative<double>(tag_value)) {
+        auto val = std::get<double>(tag_value);
+        str = fmt::format("{}", val);
+    }
+
+    return formatter<std::string>::format(str, ctx);
+}
+
 }  // namespace fmt

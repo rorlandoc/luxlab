@@ -6,6 +6,7 @@
 #include <array>
 #include <cstddef>
 #include <span>
+#include <vector>
 
 #include "luxlab/byte_order.hpp"
 #include "luxlab/tag_data_format.hpp"
@@ -26,14 +27,18 @@ class Tag {
 
     inline int components() const { return m_components; }
     inline int data_size() const { return m_components * m_format.size(); }
-    inline int value() const { return m_value; }
+    inline const std::vector<TagValue> &values() const { return m_values; }
+
+    inline bool has_offset() const { return m_offset; }
+    void initialize_value(std::span<std::byte> data);
 
    private:
     ByteOrder m_byte_order;
     TagType m_type;
     TagDataFormat m_format;
     int m_components;
-    int m_value;
+    bool m_offset;
+    std::vector<TagValue> m_values;
 };
 
 }  // namespace luxlab
