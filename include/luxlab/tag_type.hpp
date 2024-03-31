@@ -23,7 +23,7 @@ class TagType {
         Y_CB_CR_POSITIONING = 0x0213,
         REFERENCE_BLACK_WHITE = 0x0214,
         COPYRIGHT = 0x8298,
-        EXIF_OFFSET = 0x8769,
+        EXIF_IFD = 0x8769,
         EXPOSURE_TIME = 0x829a,
         F_NUMBER = 0x829d,
         EXPOSURE_PROGRAM = 0x8822,
@@ -50,7 +50,7 @@ class TagType {
         EXIF_IMAGE_WIDTH = 0xa002,
         EXIF_IMAGE_HEIGHT = 0xa003,
         RELATED_SOUND_FILE = 0xa004,
-        EXIF_INTEROPERABILITY_OFFSET = 0xa005,
+        EXIF_INTEROPERABILITY_IFD = 0xa005,
         FOCAL_PLANE_X_RESOLUTION = 0xa20e,
         FOCAL_PLANE_Y_RESOLUTION = 0xa20f,
         FOCAL_PLANE_RESOLUTION_UNIT = 0xa210,
@@ -104,6 +104,9 @@ class TagType {
         SUB_SEC_TIME = 0x9290,
         SUB_SEC_TIME_ORIGINAL = 0x9291,
         SUB_SEC_TIME_DIGITIZED = 0x9292,
+        XMP = 0x02bc,
+        PRINT_IMAGE_MATCHING = 0xc4a5,
+        DNG_PRIVATE_DATA = 0xc634,
     };
 
     TagType() = default;
@@ -114,6 +117,11 @@ class TagType {
     explicit operator bool() = delete;
 
     constexpr int id() const { return static_cast<int>(m_type); }
+
+    constexpr bool has_subdirectory() const {
+        return m_type == SUB_IFDS || m_type == EXIF_IFD || m_type == JPEG_IF_OFFSET ||
+               m_type == GPS_INFO || m_type == EXIF_INTEROPERABILITY_IFD || m_type == XMP;
+    }
 
    private:
     Type m_type;

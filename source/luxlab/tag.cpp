@@ -31,23 +31,25 @@ Tag::Tag(std::span<std::byte> data, ByteOrder byte_order) : m_byte_order(byte_or
 
     // get data offset or value
     m_values.push_back(m_byte_order.calculate<uint32_t>({current_byte, 4}));
-    current_byte += 4;
 
     // check if data is stored in the tag itself
     if (m_components * m_format.size() <= 4) {
         // initialize value if more than one component
         if (m_components > 1) {
             m_offset = true;
-            this->initialize_value({current_byte - 4, 4});
+            this->initialize_value({current_byte, 4});
+            m_offset = false;
         }
-        m_offset = false;
+        if (m_type.has_subdirectory()) {
+            m_offset = true;
+        }
     } else {
         m_offset = true;
     }
 }
 
 void Tag::initialize_value(std::span<std::byte> data) {
-    if (m_offset) {
+    if (m_offset && !m_type.has_subdirectory()) {
         // check buffer size
         if (data.size() < this->data_size()) {
             fmt::print("ERROR: Tag data buffer is too small\n");

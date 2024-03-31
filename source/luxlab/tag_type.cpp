@@ -54,7 +54,7 @@ format_context::iterator formatter<luxlab::TagType>::format(const luxlab::TagTyp
         case luxlab::TagType::COPYRIGHT:
             str = "Copyright";
             break;
-        case luxlab::TagType::EXIF_OFFSET:
+        case luxlab::TagType::EXIF_IFD:
             str = "Exif offset";
             break;
         case luxlab::TagType::EXPOSURE_TIME:
@@ -135,8 +135,8 @@ format_context::iterator formatter<luxlab::TagType>::format(const luxlab::TagTyp
         case luxlab::TagType::RELATED_SOUND_FILE:
             str = "Related sound file";
             break;
-        case luxlab::TagType::EXIF_INTEROPERABILITY_OFFSET:
-            str = "Exif interoperability offset";
+        case luxlab::TagType::EXIF_INTEROPERABILITY_IFD:
+            str = "Exif interoperability IFD";
             break;
         case luxlab::TagType::FOCAL_PLANE_X_RESOLUTION:
             str = "Focal plane X resolution";
@@ -296,6 +296,15 @@ format_context::iterator formatter<luxlab::TagType>::format(const luxlab::TagTyp
             break;
         case luxlab::TagType::SUB_SEC_TIME_DIGITIZED:
             str = "Sub sec time digitized";
+            break;
+        case luxlab::TagType::XMP:
+            str = "XMP";
+            break;
+        case luxlab::TagType::PRINT_IMAGE_MATCHING:
+            str = "Print image matching";
+            break;
+        case luxlab::TagType::DNG_PRIVATE_DATA:
+            str = "DNG private data";
             break;
     }
 
