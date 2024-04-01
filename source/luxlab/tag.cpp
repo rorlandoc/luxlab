@@ -306,6 +306,51 @@ format_context::iterator formatter<luxlab::Tag>::format(const luxlab::Tag& forma
         case luxlab::Tag::DNG_PRIVATE_DATA:
             str = "DNG private data";
             break;
+        case luxlab::Tag::SONY_RAW_FILE_TYPE:
+            str = "Sony raw file type";
+            break;
+        case luxlab::Tag::SONY_TONE_CURVE:
+            str = "Sony tone curve";
+            break;
+        case luxlab::Tag::VIGNETTING_CORRECTION:
+            str = "Vignetting correction";
+            break;
+        case luxlab::Tag::VIGNETTING_CORRECTION_PARAMS:
+            str = "Vignetting correction params";
+            break;
+        case luxlab::Tag::CHROMATIC_ABERRATION_CORRECTION:
+            str = "Chromatic aberration correction";
+            break;
+        case luxlab::Tag::CHROMATIC_ABERRATION_CORRECTION_PARAMS:
+            str = "Chromatic aberration correction params";
+            break;
+        case luxlab::Tag::DISTORTION_CORRECTION:
+            str = "Distortion correction";
+            break;
+        case luxlab::Tag::DISTORTION_CORRECTION_PARAMS:
+            str = "Distortion correction params";
+            break;
+        case luxlab::Tag::BLACK_LEVEL:
+            str = "Black level";
+            break;
+        case luxlab::Tag::WB_RGGB_LEVELS:
+            str = "WB RGGB levels";
+            break;
+        case luxlab::Tag::SONY_CROP_TOP_LEFT:
+            str = "Sony crop top left";
+            break;
+        case luxlab::Tag::SONY_CROP_SIZE:
+            str = "Sony crop size";
+            break;
+        case luxlab::Tag::WHITE_LEVEL:
+            str = "White level";
+            break;
+        case luxlab::Tag::DEFAULT_CROP_ORIGIN:
+            str = "Default crop origin";
+            break;
+        case luxlab::Tag::DEFAULT_CROP_SIZE:
+            str = "Default crop size";
+            break;
     }
 
     return formatter<std::string>::format(str, ctx);

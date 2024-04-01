@@ -198,8 +198,7 @@ format_context::iterator formatter<luxlab::DirectoryEntry>::format(
     str += fmt::format("|    Size   : {} bytes", entry.data_size());
     if (entry.tag().has_subdirectory() && entry.sub_ifd() != nullptr) {
         luxlab::IFD sub_ifd = *entry.sub_ifd();
-        str += "\n" + pad;
-        str += fmt::format("|    Sub IFD 0x{:04X} - {}\n", entry.tag_id(), entry.tag());
+        str += "\n";
         std::string sub_ifd_fmt = "{:" + fmt::format("{}", m_padding + 1) + "}";
         str += fmt::format(fmt::runtime(sub_ifd_fmt), sub_ifd);
     } else if (entry.has_offset()) {
