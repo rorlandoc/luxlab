@@ -15,7 +15,7 @@ namespace luxlab {
 class IFD {
    public:
     IFD() = default;
-    IFD(int id, std::span<std::byte> data, int offset, ByteOrder byte_order);
+    IFD(int id, std::span<std::byte> data, uint32_t offset, ByteOrder byte_order);
 
     const std::map<Tag, DirectoryEntry> &entries() const { return m_entries; }
     std::map<Tag, DirectoryEntry> &entries() { return m_entries; }
@@ -29,6 +29,7 @@ class IFD {
     int m_offset;
     ByteOrder m_byte_order;
     std::map<Tag, DirectoryEntry> m_entries;
+    std::map<Tag, IFD> m_sub_ifds;
 };
 
 }  // namespace luxlab

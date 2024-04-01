@@ -4,7 +4,7 @@
 
 namespace luxlab {
 
-IFD::IFD(int id, std::span<std::byte> data, int offset, ByteOrder byte_order)
+IFD::IFD(int id, std::span<std::byte> data, uint32_t offset, ByteOrder byte_order)
     : m_id(id), m_offset(offset), m_byte_order(byte_order) {
     // get handle to start of IFD section
     auto current_byte = data.begin() + offset;
@@ -28,7 +28,27 @@ IFD::IFD(int id, std::span<std::byte> data, int offset, ByteOrder byte_order)
     // get entries
     for (int ientry = 0; ientry < num_entries; ++ientry) {
         DirectoryEntry entry{{current_byte, 12}, m_byte_order};
-        if (entry.has_offset()) {
+        if (entry.tag().has_subdirectory()) {
+            auto offset = std::get<uint32_t>(entry.values()[0]);
+            switch (entry.tag()) {
+                case Tag::SUB_IFDS: {
+                    IFD sub_ifd{entry.tag_id(), data, offset, m_byte_order};
+                    m_sub_ifds[entry.tag()] = sub_ifd;
+                    entry.set_sub_ifd(&m_sub_ifds[entry.tag()]);
+                    break;
+                }
+                case Tag::EXIF_IFD:
+                    break;
+                case Tag::JPEG_IF_OFFSET:
+                    break;
+                case Tag::GPS_INFO:
+                    break;
+                case Tag::EXIF_INTEROPERABILITY_IFD:
+                    break;
+                case Tag::XMP:
+                    break;
+            }
+        } else if (entry.has_offset()) {
             auto offset = std::get<uint32_t>(entry.values()[0]);
             entry.initialize_value(
                 {data.begin() + offset, static_cast<size_t>(entry.data_size())});

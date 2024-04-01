@@ -14,6 +14,8 @@
 
 namespace luxlab {
 
+class IFD;
+
 class DirectoryEntry {
    public:
     DirectoryEntry() = default;
@@ -32,6 +34,9 @@ class DirectoryEntry {
     inline bool has_offset() const { return m_offset; }
     void initialize_value(std::span<std::byte> data);
 
+    void set_sub_ifd(IFD *sub_ifd);
+    IFD *sub_ifd() const { return m_sub_ifd; }
+
    private:
     ByteOrder m_byte_order;
     Tag m_tag;
@@ -39,6 +44,7 @@ class DirectoryEntry {
     int m_components;
     bool m_offset;
     std::vector<TagValue> m_values;
+    IFD *m_sub_ifd = nullptr;
 };
 
 }  // namespace luxlab

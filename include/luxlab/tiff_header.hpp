@@ -16,11 +16,11 @@ class TIFFHeader {
     TIFFHeader(const std::vector<std::byte>& data);
 
     inline ByteOrder byte_order() const { return m_byte_order; }
-    inline int offset() const { return m_offset; }
+    inline uint32_t offset() const { return m_offset; }
 
    private:
     ByteOrder m_byte_order;
-    int m_offset;
+    uint32_t m_offset;
 };
 
 }  // namespace luxlab
