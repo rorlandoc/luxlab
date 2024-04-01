@@ -17,18 +17,18 @@ FetchContent_MakeAvailable(fmt)
 add_executable(luxlab
   include/luxlab/rational.hpp
   include/luxlab/tag_data_format.hpp
-  include/luxlab/tag_type.hpp
-  include/luxlab/byte_order.hpp
   include/luxlab/tag.hpp
+  include/luxlab/byte_order.hpp
+  include/luxlab/directory_entry.hpp
   include/luxlab/ifd.hpp
   include/luxlab/exif.hpp
   include/luxlab/tiff_header.hpp
   include/luxlab/raw_image.hpp
 
   source/luxlab/tag_data_format.cpp
-  source/luxlab/tag_type.cpp
-  source/luxlab/byte_order.cpp
   source/luxlab/tag.cpp
+  source/luxlab/byte_order.cpp
+  source/luxlab/directory_entry.cpp
   source/luxlab/ifd.cpp
   source/luxlab/exif.cpp
   source/luxlab/tiff_header.cpp

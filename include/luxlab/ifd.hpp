@@ -8,7 +8,7 @@
 #include <span>
 
 #include "luxlab/byte_order.hpp"
-#include "luxlab/tag.hpp"
+#include "luxlab/directory_entry.hpp"
 
 namespace luxlab {
 
@@ -17,18 +17,18 @@ class IFD {
     IFD() = default;
     IFD(int id, std::span<std::byte> data, int offset, ByteOrder byte_order);
 
-    const std::map<TagType, Tag> &tags() const { return m_tags; }
-    std::map<TagType, Tag> &tags() { return m_tags; }
+    const std::map<Tag, DirectoryEntry> &entries() const { return m_entries; }
+    std::map<Tag, DirectoryEntry> &entries() { return m_entries; }
 
     int id() const { return m_id; }
     int offset() const { return m_id; }
-    int num_entries() const { return m_tags.size(); }
+    int num_entries() const { return m_entries.size(); }
 
    private:
     int m_id;
     int m_offset;
     ByteOrder m_byte_order;
-    std::map<TagType, Tag> m_tags;
+    std::map<Tag, DirectoryEntry> m_entries;
 };
 
 }  // namespace luxlab
