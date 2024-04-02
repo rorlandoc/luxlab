@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <map>
+#include <memory>
 #include <span>
 
 #include "luxlab/byte_order.hpp"
@@ -20,16 +21,17 @@ class IFD {
     const std::map<Tag, DirectoryEntry> &entries() const { return m_entries; }
     std::map<Tag, DirectoryEntry> &entries() { return m_entries; }
 
-    int id() const { return m_id; }
-    int offset() const { return m_id; }
-    int num_entries() const { return m_entries.size(); }
+    inline int id() const { return m_id; }
+    inline int offset() const { return m_id; }
+    inline int num_entries() const { return m_entries.size(); }
+    inline size_t size() const { return 2 + 12 * m_entries.size(); }
 
    private:
     int m_id;
     int m_offset;
     ByteOrder m_byte_order;
     std::map<Tag, DirectoryEntry> m_entries;
-    std::map<Tag, IFD> m_sub_ifds;
+    std::map<Tag, std::shared_ptr<IFD>> m_sub_ifds;
 };
 
 }  // namespace luxlab

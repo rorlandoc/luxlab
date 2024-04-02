@@ -172,7 +172,7 @@ void DirectoryEntry::initialize_value(std::span<std::byte> data) {
     }
 }
 
-void DirectoryEntry::set_sub_ifd(IFD *sub_ifd) {
+void DirectoryEntry::set_sub_ifd(std::shared_ptr<IFD> sub_ifd) {
     if (m_tag.has_subdirectory()) {
         m_sub_ifd = sub_ifd;
     }

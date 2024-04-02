@@ -38,8 +38,18 @@ RawImage::RawImage(const std::filesystem::path& file_path) {
     // initialize header
     m_header = TIFFHeader{m_data};
 
-    // initialize first IFD
-    m_ifds.push_back(IFD{0, m_data, m_header.offset(), m_header.byte_order()});
+    // initialize ifds
+    uint32_t offset = m_header.offset();
+    int ifd_counter = 0;
+    while (offset != 0) {
+        // create IFD
+        IFD ifd{ifd_counter++, m_data, offset, m_header.byte_order()};
+        m_ifds.push_back(ifd);
+
+        // get next IFD offset
+        offset = m_header.byte_order().calculate<uint32_t>(
+            {m_data.begin() + offset + ifd.size(), 4});
+    }
 }
 
 void RawImage::dump_hex() const {
@@ -104,7 +114,9 @@ format_context::iterator formatter<luxlab::RawImage>::format(
     str += fmt::format("|    Path: {}\n", raw_image.path().string());
     str += fmt::format("|    Size: {} bytes\n", raw_image.size());
     str += fmt::format("{:1}\n", raw_image.header());
-    str += fmt::format("{:1}", raw_image.ifds().front());
+    for (const auto& ifd : raw_image.ifds()) {
+        str += fmt::format("{:1}\n", ifd);
+    }
     return formatter<std::string>::format(str, ctx);
 }
 

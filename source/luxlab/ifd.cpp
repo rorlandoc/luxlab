@@ -32,9 +32,9 @@ IFD::IFD(int id, std::span<std::byte> data, uint32_t offset, ByteOrder byte_orde
             auto offset = std::get<uint32_t>(entry.values()[0]);
             switch (entry.tag()) {
                 case Tag::SUB_IFDS: {
-                    IFD sub_ifd{entry.tag_id(), data, offset, m_byte_order};
-                    m_sub_ifds[entry.tag()] = sub_ifd;
-                    entry.set_sub_ifd(&m_sub_ifds[entry.tag()]);
+                    m_sub_ifds[entry.tag()] =
+                        std::make_shared<IFD>(entry.tag_id(), data, offset, m_byte_order);
+                    entry.set_sub_ifd(m_sub_ifds[entry.tag()]);
                     break;
                 }
                 case Tag::EXIF_IFD:
@@ -71,12 +71,20 @@ format_context::iterator formatter<luxlab::IFD>::format(const luxlab::IFD &ifd,
 
     std::string str = "";
     str += pad;
+    str += "--------------------------------\n";
+
+    str += pad;
     str += fmt::format("IFD {} [{} entries]", ifd.id(), ifd.num_entries());
 
     std::string tag_fmt = "{:" + fmt::format("{}", m_padding + 1) + "}";
-    for (const auto &[_, tag] : ifd.entries()) {
-        str += fmt::format(fmt::runtime(tag_fmt), tag);
+    for (const auto &[_, entry] : ifd.entries()) {
+        str += fmt::format(fmt::runtime(tag_fmt), entry);
     }
+
+    str += "\n" + pad;
+    str += fmt::format("End of IFD {}", ifd.id());
+    str += "\n" + pad;
+    str += "--------------------------------";
 
     return format_to(ctx.out(), "{}", str);
 }
