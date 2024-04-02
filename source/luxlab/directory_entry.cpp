@@ -210,10 +210,15 @@ format_context::iterator formatter<luxlab::DirectoryEntry>::format(
             str += "\n" + pad;
             str += fmt::format("|    Value  : {}", entry.values()[0]);
         } else {
-            for (const auto &val : entry.values()) {
-                str += "\n" + pad;
-                str += fmt::format("|    Value  : {}", val);
+            str += "\n" + pad;
+            str += fmt::format("|    Value  : [{}", entry.values()[0]);
+            for (int ival = 1; ival < std::min(3, entry.components()); ++ival) {
+                str += fmt::format(", {}", entry.values()[ival]);
             }
+            if (entry.components() > 3) {
+                str += ", ...";
+            }
+            str += "]";
         }
     }
 

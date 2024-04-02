@@ -30,23 +30,11 @@ IFD::IFD(int id, std::span<std::byte> data, uint32_t offset, ByteOrder byte_orde
         DirectoryEntry entry{{current_byte, 12}, m_byte_order};
         if (entry.tag().has_subdirectory()) {
             auto offset = std::get<uint32_t>(entry.values()[0]);
-            switch (entry.tag()) {
-                case Tag::SUB_IFDS: {
-                    m_sub_ifds[entry.tag()] =
-                        std::make_shared<IFD>(entry.tag_id(), data, offset, m_byte_order);
-                    entry.set_sub_ifd(m_sub_ifds[entry.tag()]);
-                    break;
-                }
-                case Tag::EXIF_IFD:
-                    break;
-                case Tag::JPEG_IF_OFFSET:
-                    break;
-                case Tag::GPS_INFO:
-                    break;
-                case Tag::EXIF_INTEROPERABILITY_IFD:
-                    break;
-                case Tag::XMP:
-                    break;
+            if (entry.tag() == Tag::SUB_IFDS || entry.tag() == Tag::EXIF_IFD ||
+                entry.tag() == Tag::EXIF_INTEROPERABILITY_IFD) {
+                m_sub_ifds[entry.tag()] =
+                    std::make_shared<IFD>(entry.tag_id(), data, offset, m_byte_order);
+                entry.set_sub_ifd(m_sub_ifds[entry.tag()]);
             }
         } else if (entry.has_offset()) {
             auto offset = std::get<uint32_t>(entry.values()[0]);

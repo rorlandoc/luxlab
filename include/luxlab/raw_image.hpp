@@ -7,7 +7,6 @@
 #include <filesystem>
 #include <vector>
 
-#include "luxlab/exif.hpp"
 #include "luxlab/ifd.hpp"
 #include "luxlab/tiff_header.hpp"
 
@@ -20,7 +19,6 @@ class RawImage {
     inline const std::filesystem::path &path() const { return m_path; }
     inline const std::vector<std::byte> &data() const { return m_data; }
     inline const std::vector<IFD> &ifds() const { return m_ifds; }
-    inline const Exif &exif() const { return m_exif; }
     inline const TIFFHeader &header() const { return m_header; }
 
     inline const size_t size() const { return m_data.size(); }
@@ -31,7 +29,6 @@ class RawImage {
     std::filesystem::path m_path;
     std::vector<std::byte> m_data;
     std::vector<IFD> m_ifds;
-    Exif m_exif;
     TIFFHeader m_header;
 };
 

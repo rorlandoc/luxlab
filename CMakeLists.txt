@@ -21,7 +21,6 @@ add_executable(luxlab
   include/luxlab/byte_order.hpp
   include/luxlab/directory_entry.hpp
   include/luxlab/ifd.hpp
-  include/luxlab/exif.hpp
   include/luxlab/tiff_header.hpp
   include/luxlab/raw_image.hpp
 
@@ -30,7 +29,6 @@ add_executable(luxlab
   source/luxlab/byte_order.cpp
   source/luxlab/directory_entry.cpp
   source/luxlab/ifd.cpp
-  source/luxlab/exif.cpp
   source/luxlab/tiff_header.cpp
   source/luxlab/raw_image.cpp
 

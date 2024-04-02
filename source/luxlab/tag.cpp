@@ -55,7 +55,7 @@ format_context::iterator formatter<luxlab::Tag>::format(const luxlab::Tag& forma
             str = "Copyright";
             break;
         case luxlab::Tag::EXIF_IFD:
-            str = "Exif offset";
+            str = "Exif IFD";
             break;
         case luxlab::Tag::EXPOSURE_TIME:
             str = "Exposure time";
