@@ -111,8 +111,8 @@ format_context::iterator formatter<luxlab::RawImage>::format(
     const luxlab::RawImage& raw_image, format_context& ctx) const {
     std::string str = "";
     str += fmt::format("Raw image\n");
-    str += fmt::format("|    Path: {}\n", raw_image.path().string());
-    str += fmt::format("|    Size: {} bytes\n", raw_image.size());
+    str += fmt::format("|  Path: {}\n", raw_image.path().string());
+    str += fmt::format("|  Size: {} bytes\n", raw_image.size());
     str += fmt::format("{:1}\n", raw_image.header());
     for (const auto& ifd : raw_image.ifds()) {
         str += fmt::format("{:1}\n", ifd);

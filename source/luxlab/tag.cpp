@@ -351,6 +351,9 @@ format_context::iterator formatter<luxlab::Tag>::format(const luxlab::Tag& forma
         case luxlab::Tag::DEFAULT_CROP_SIZE:
             str = "Default crop size";
             break;
+        case luxlab::Tag::INTEROPERABILITY_INDEX:
+            str = "Interoperability index";
+            break;
     }
 
     return formatter<std::string>::format(str, ctx);

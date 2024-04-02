@@ -54,7 +54,7 @@ format_context::iterator formatter<luxlab::IFD>::format(const luxlab::IFD &ifd,
                                                         format_context &ctx) const {
     std::string pad = "";
     for (int i = 0; i < m_padding; ++i) {
-        pad += "|    ";
+        pad += "|  ";
     }
 
     std::string str = "";

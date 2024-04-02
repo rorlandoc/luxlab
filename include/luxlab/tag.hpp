@@ -125,6 +125,9 @@ class Tag {
         WHITE_LEVEL = 0xc61d,
         DEFAULT_CROP_ORIGIN = 0xc61f,
         DEFAULT_CROP_SIZE = 0xc620,
+
+        // Exif Interoperability tags
+        INTEROPERABILITY_INDEX = 0x0001,
     };
 
     Tag() = default;

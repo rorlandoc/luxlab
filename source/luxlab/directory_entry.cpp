@@ -186,16 +186,17 @@ format_context::iterator formatter<luxlab::DirectoryEntry>::format(
     const luxlab::DirectoryEntry &entry, format_context &ctx) const {
     std::string pad = "";
     for (int i = 0; i < m_padding; ++i) {
-        pad += "|    ";
+        pad += "|  ";
     }
 
     std::string str = "";
     str += "\n" + pad;
-    str += fmt::format("Tag 0x{:04X} - {}", entry.tag_id(), entry.tag());
     str += "\n" + pad;
-    str += fmt::format("|    Format : {} x {}", entry.components(), entry.format());
+    str += fmt::format("{} - tag 0x{:04X}", entry.tag(), entry.tag_id());
     str += "\n" + pad;
-    str += fmt::format("|    Size   : {} bytes", entry.data_size());
+    str += fmt::format("|  Format : {} x {}", entry.components(), entry.format());
+    str += "\n" + pad;
+    str += fmt::format("|  Size   : {} bytes", entry.data_size());
     if (entry.tag().has_subdirectory() && entry.sub_ifd() != nullptr) {
         luxlab::IFD sub_ifd = *entry.sub_ifd();
         str += "\n";
@@ -204,23 +205,28 @@ format_context::iterator formatter<luxlab::DirectoryEntry>::format(
     } else if (entry.has_offset()) {
         auto val = std::get<uint32_t>(entry.values()[0]);
         str += "\n" + pad;
-        str += fmt::format("|    Offset : 0x{:08X}", val);
+        str += fmt::format("|  Offset : 0x{:08X}", val);
     } else {
         if (entry.format() == luxlab::TagDataFormat::ASCII_STRING) {
             str += "\n" + pad;
-            str += fmt::format("|    Value  : {}", entry.values()[0]);
+            str += fmt::format("|  Value  : {}", entry.values()[0]);
         } else {
             str += "\n" + pad;
-            str += fmt::format("|    Value  : [{}", entry.values()[0]);
-            for (int ival = 1; ival < std::min(3, entry.components()); ++ival) {
-                str += fmt::format(", {}", entry.values()[ival]);
+            if (entry.components() > 1) {
+                str += fmt::format("|  Value  : [{}", entry.values()[0]);
+                for (int ival = 1; ival < std::min(3, entry.components()); ++ival) {
+                    str += fmt::format(", {}", entry.values()[ival]);
+                }
+                if (entry.components() > 3) {
+                    str += ", ...";
+                }
+                str += "]";
+            } else {
+                str += fmt::format("|  Value  : {}", entry.values()[0]);
             }
-            if (entry.components() > 3) {
-                str += ", ...";
-            }
-            str += "]";
         }
     }
+    str += "\n" + pad;
 
     return format_to(ctx.out(), "{}", str);
 }

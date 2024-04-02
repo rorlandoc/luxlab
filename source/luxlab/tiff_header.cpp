@@ -53,17 +53,17 @@ format_context::iterator formatter<luxlab::TIFFHeader>::format(
     const luxlab::TIFFHeader& header, format_context& ctx) const {
     std::string pad = "";
     for (int i = 0; i < m_padding; ++i) {
-        pad += "|    ";
+        pad += "|  ";
     }
 
     std::string str = "";
     str += pad;
     str += "TIFF header:";
     str += "\n" + pad;
-    str += "|    Byte order: ";
+    str += "|  Byte order: ";
     str += fmt::format("{}", header.byte_order());
     str += "\n" + pad;
-    str += "|    Offset to first IFD: 0x";
+    str += "|  Offset to first IFD: 0x";
     str += fmt::format("{:08X}", header.offset());
 
     return format_to(ctx.out(), "{}", str);
