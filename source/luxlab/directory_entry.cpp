@@ -42,9 +42,10 @@ DirectoryEntry::DirectoryEntry(std::span<std::byte> data, ByteOrder byte_order)
             m_offset = true;
             this->initialize_value({current_byte, 4});
             m_offset = false;
-        }
-        if (m_tag.has_subdirectory() || m_tag.has_unknown_layout()) {
+        } else if (m_tag.has_subdirectory() || m_tag.has_unknown_layout()) {
             m_offset = true;
+        } else {
+            m_offset = false;
         }
     } else {
         m_offset = true;
@@ -64,7 +65,7 @@ void DirectoryEntry::initialize_value(std::span<std::byte> data) {
 
         // Initialize values
         auto current_byte = data.begin();
-        auto size_offset = static_cast<size_t>(m_format.size());
+        size_t size_offset = m_format.size();
         switch (m_format) {
             case TagDataFormat::UNSIGNED_BYTE:
                 current_byte = data.begin();

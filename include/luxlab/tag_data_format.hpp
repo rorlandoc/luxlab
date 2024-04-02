@@ -36,12 +36,12 @@ class TagDataFormat {
     explicit operator bool() = delete;
 
     constexpr int id() const { return static_cast<int>(m_format); }
-    constexpr int size() const { return format_sizes[m_format - 1]; }
+    constexpr size_t size() const { return format_sizes[m_format - 1]; }
 
    private:
     Format m_format;
-    constexpr static std::array<int, 12> format_sizes = {1, 1, 2, 4, 8, 1,
-                                                         1, 2, 4, 8, 4, 8};
+    constexpr static std::array<size_t, 12> format_sizes = {1, 1, 2, 4, 8, 1,
+                                                            1, 2, 4, 8, 4, 8};
 };
 
 using TagValue =
