@@ -1,10 +1,11 @@
 #ifndef LUXLAB_TAG_DATA_FORMAT_HPP
 #define LUXLAB_TAG_DATA_FORMAT_HPP
 
-#include <fmt/core.h>
-
 #include <array>
 #include <variant>
+
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 #include "luxlab/rational.hpp"
 
@@ -51,6 +52,10 @@ using TagValue =
                  std::byte /* Undefined */, int16_t /* Signed short */,
                  int32_t /* Signed long */, SignedRational /* Signed rational */,
                  float /* Float */, double /* Double */>;
+
+void to_json(nlohmann::json &j, const TagDataFormat &format);
+
+void to_json(nlohmann::json &j, const TagValue &value);
 
 }  // namespace luxlab
 

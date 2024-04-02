@@ -1,6 +1,17 @@
-#include "luxlab/byte_order.hpp"
+#include <string>
 
 #include <fmt/format.h>
+#include <nlohmann/json.hpp>
+
+#include "luxlab/byte_order.hpp"
+
+namespace luxlab {
+
+void to_json(nlohmann::json& j, const ByteOrder& byte_order) {
+    j = fmt::format("{}", byte_order);
+}
+
+}  // namespace luxlab
 
 namespace fmt {
 

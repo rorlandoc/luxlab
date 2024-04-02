@@ -1,11 +1,12 @@
 #ifndef LUXLAB_RAW_IMAGE_HPP
 #define LUXLAB_RAW_IMAGE_HPP
 
-#include <fmt/core.h>
-
 #include <cstddef>
 #include <filesystem>
 #include <vector>
+
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 #include "luxlab/ifd.hpp"
 #include "luxlab/tiff_header.hpp"
@@ -31,6 +32,8 @@ class RawImage {
     std::vector<IFD> m_ifds;
     TIFFHeader m_header;
 };
+
+void to_json(nlohmann::json &j, const RawImage &raw_image);
 
 }  // namespace luxlab
 

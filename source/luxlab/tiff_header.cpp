@@ -1,6 +1,7 @@
-#include "luxlab/tiff_header.hpp"
-
 #include <fmt/format.h>
+#include <nlohmann/json.hpp>
+
+#include "luxlab/tiff_header.hpp"
 
 namespace luxlab {
 
@@ -45,6 +46,11 @@ TIFFHeader::TIFFHeader(const std::vector<std::byte>& data) {
     m_offset = m_byte_order.calculate({current_byte, 4});
 }
 
+void to_json(nlohmann::json& j, const TIFFHeader& header) {
+    j = nlohmann::json{{"byte_order", header.byte_order()},
+                       {"offset", fmt::format("0x{:08X}", header.offset())}};
+}
+
 }  // namespace luxlab
 
 namespace fmt {
@@ -66,7 +72,7 @@ format_context::iterator formatter<luxlab::TIFFHeader>::format(
     str += "|  Offset to first IFD: 0x";
     str += fmt::format("{:08X}", header.offset());
 
-    return format_to(ctx.out(), "{}", str);
+    return fmt::format_to(ctx.out(), "{}", str);
 }
 
 }  // namespace fmt

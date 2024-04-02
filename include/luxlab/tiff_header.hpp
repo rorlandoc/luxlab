@@ -1,10 +1,11 @@
 #ifndef LUXLAB_TIFF_HEADER_HPP
 #define LUXLAB_TIFF_HEADER_HPP
 
-#include <fmt/core.h>
-
 #include <cstddef>
 #include <vector>
+
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 #include "luxlab/byte_order.hpp"
 
@@ -22,6 +23,8 @@ class TIFFHeader {
     ByteOrder m_byte_order;
     uint32_t m_offset;
 };
+
+void to_json(nlohmann::json& j, const TIFFHeader& header);
 
 }  // namespace luxlab
 

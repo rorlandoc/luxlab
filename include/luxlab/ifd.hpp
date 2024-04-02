@@ -1,12 +1,13 @@
 #ifndef LUXLAB_IFD_HPP
 #define LUXLAB_IFD_HPP
 
-#include <fmt/core.h>
-
 #include <cstddef>
 #include <map>
 #include <memory>
 #include <span>
+
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 #include "luxlab/byte_order.hpp"
 #include "luxlab/directory_entry.hpp"
@@ -22,7 +23,7 @@ class IFD {
     std::map<Tag, DirectoryEntry> &entries() { return m_entries; }
 
     inline int id() const { return m_id; }
-    inline int offset() const { return m_id; }
+    inline int offset() const { return m_offset; }
     inline int num_entries() const { return m_entries.size(); }
     inline size_t size() const { return 2 + 12 * m_entries.size(); }
 
@@ -33,6 +34,8 @@ class IFD {
     std::map<Tag, DirectoryEntry> m_entries;
     std::map<Tag, std::shared_ptr<IFD>> m_sub_ifds;
 };
+
+void to_json(nlohmann::json &j, const IFD &ifd);
 
 }  // namespace luxlab
 

@@ -1,11 +1,24 @@
+#include <fmt/format.h>
+#include <nlohmann/json.hpp>
+
 #include "luxlab/tag_data_format.hpp"
 
-#include <fmt/format.h>
+namespace luxlab {
+
+void to_json(nlohmann::json &j, const TagDataFormat &format) {
+    j = fmt::format("{}", format);
+}
+
+void to_json(nlohmann::json &j, const TagValue &value) {
+    std::visit([&j](const auto &v) { j = v; }, value);
+}
+
+}  // namespace luxlab
 
 namespace fmt {
 
 format_context::iterator formatter<luxlab::TagDataFormat>::format(
-    const luxlab::TagDataFormat& tag_data_format, format_context& ctx) const {
+    const luxlab::TagDataFormat &tag_data_format, format_context &ctx) const {
     std::string str = "Unknown";
 
     switch (tag_data_format) {
@@ -50,7 +63,7 @@ format_context::iterator formatter<luxlab::TagDataFormat>::format(
 }
 
 format_context::iterator formatter<luxlab::TagValue>::format(
-    const luxlab::TagValue& tag_value, format_context& ctx) const {
+    const luxlab::TagValue &tag_value, format_context &ctx) const {
     std::string str = "Unknown";
 
     if (std::holds_alternative<uint8_t>(tag_value)) {

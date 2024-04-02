@@ -1,13 +1,14 @@
 #ifndef LUXLAB_DIRECTORY_ENTRY_HPP
 #define LUXLAB_DIRECTORY_ENTRY_HPP
 
-#include <fmt/core.h>
-
 #include <array>
 #include <cstddef>
 #include <memory>
 #include <span>
 #include <vector>
+
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 #include "luxlab/byte_order.hpp"
 #include "luxlab/tag.hpp"
@@ -47,6 +48,8 @@ class DirectoryEntry {
     std::vector<TagValue> m_values;
     std::shared_ptr<IFD> m_sub_ifd = nullptr;
 };
+
+void to_json(nlohmann::json &j, const DirectoryEntry &entry);
 
 }  // namespace luxlab
 

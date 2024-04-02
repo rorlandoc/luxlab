@@ -1,12 +1,13 @@
 #ifndef LUXLAB_BYTE_ORDER_HPP
 #define LUXLAB_BYTE_ORDER_HPP
 
-#include <fmt/core.h>
-
 #include <algorithm>
 #include <bit>
 #include <cstddef>
 #include <span>
+
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 namespace luxlab {
 
@@ -78,6 +79,8 @@ class ByteOrder {
    private:
     Endianness m_endianness;
 };
+
+void to_json(nlohmann::json& j, const ByteOrder& byte_order);
 
 }  // namespace luxlab
 

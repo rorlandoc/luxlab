@@ -1,6 +1,7 @@
-#include "luxlab/ifd.hpp"
-
 #include <fmt/format.h>
+#include <nlohmann/json.hpp>
+
+#include "luxlab/ifd.hpp"
 
 namespace luxlab {
 
@@ -46,6 +47,16 @@ IFD::IFD(int id, std::span<std::byte> data, uint32_t offset, ByteOrder byte_orde
     }
 }
 
+void to_json(nlohmann::json &j, const IFD &ifd) {
+    j = nlohmann::json{
+        {"id", ifd.id()}, {"offset", ifd.offset()}, {"num_entries", ifd.num_entries()}};
+    nlohmann::json entries;
+    for (const auto &[_, entry] : ifd.entries()) {
+        entries.push_back(entry);
+    }
+    j["entries"] = entries;
+}
+
 }  // namespace luxlab
 
 namespace fmt {
@@ -74,7 +85,7 @@ format_context::iterator formatter<luxlab::IFD>::format(const luxlab::IFD &ifd,
     str += "\n" + pad;
     str += "--------------------------------";
 
-    return format_to(ctx.out(), "{}", str);
+    return fmt::format_to(ctx.out(), "{}", str);
 }
 
 }  // namespace fmt

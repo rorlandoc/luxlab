@@ -1,11 +1,14 @@
 #ifndef LUXLAB_RATIONAL_HPP
 #define LUXLAB_RATIONAL_HPP
 
-#include <fmt/format.h>
-
 #include <cstddef>
 #include <cstdint>
 #include <span>
+#include <string>
+#include <type_traits>
+
+#include <fmt/format.h>
+#include <nlohmann/json.hpp>
 
 #include "luxlab/byte_order.hpp"
 
@@ -48,6 +51,11 @@ struct Rational {
 
 using UnsignedRational = Rational<uint32_t>;
 using SignedRational = Rational<int32_t>;
+
+template <typename T>
+void to_json(nlohmann::json& j, const Rational<T>& r) {
+    j = fmt::format("{}/{}", r.numerator, r.denominator);
+}
 
 }  // namespace luxlab
 

@@ -1,6 +1,16 @@
+#include <fmt/format.h>
+#include <nlohmann/json.hpp>
+
 #include "luxlab/tag.hpp"
 
-#include <fmt/format.h>
+namespace luxlab {
+
+void to_json(nlohmann::json& j, const Tag& tag) {
+    j = nlohmann::json{{"id", fmt::format("0x{:04X}", static_cast<uint8_t>(tag))},
+                       {"name", fmt::format("{}", tag)}};
+}
+
+}  // namespace luxlab
 
 namespace fmt {
 

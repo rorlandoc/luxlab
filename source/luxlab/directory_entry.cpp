@@ -1,7 +1,7 @@
-#include "luxlab/directory_entry.hpp"
-
 #include <fmt/format.h>
+#include <nlohmann/json.hpp>
 
+#include "luxlab/directory_entry.hpp"
 #include "luxlab/ifd.hpp"
 
 namespace luxlab {
@@ -38,12 +38,12 @@ DirectoryEntry::DirectoryEntry(std::span<std::byte> data, ByteOrder byte_order)
     // check if data is stored in the tag itself
     if (m_components * m_format.size() <= 4) {
         // initialize value if more than one component
-        if (m_components > 1) {
+        if (m_tag.has_subdirectory() || m_tag.has_unknown_layout()) {
+            m_offset = true;
+        } else if (m_components > 1) {
             m_offset = true;
             this->initialize_value({current_byte, 4});
             m_offset = false;
-        } else if (m_tag.has_subdirectory() || m_tag.has_unknown_layout()) {
-            m_offset = true;
         } else {
             m_offset = false;
         }
@@ -179,6 +179,17 @@ void DirectoryEntry::set_sub_ifd(std::shared_ptr<IFD> sub_ifd) {
     }
 }
 
+void to_json(nlohmann::json &j, const DirectoryEntry &entry) {
+    j = nlohmann::json{{"tag", entry.tag()},
+                       {"format", entry.format()},
+                       {"components", entry.components()},
+                       {"values", entry.values()},
+                       {"offset", entry.has_offset()}};
+    if (entry.sub_ifd() != nullptr) {
+        j["sub_ifd"] = *entry.sub_ifd();
+    }
+};
+
 }  // namespace luxlab
 
 namespace fmt {
@@ -229,7 +240,7 @@ format_context::iterator formatter<luxlab::DirectoryEntry>::format(
     }
     str += "\n" + pad;
 
-    return format_to(ctx.out(), "{}", str);
+    return fmt::format_to(ctx.out(), "{}", str);
 }
 
 }  // namespace fmt

@@ -9,10 +9,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
+
 FetchContent_Declare(fmt
   GIT_REPOSITORY https://github.com/fmtlib/fmt.git
   GIT_TAG master)
-FetchContent_MakeAvailable(fmt)
+FetchContent_Declare(json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG develop)
+FetchContent_MakeAvailable(fmt json)
 
 add_executable(luxlab
   include/luxlab/rational.hpp
@@ -33,5 +37,5 @@ add_executable(luxlab
   source/luxlab/raw_image.cpp
 
   source/luxlab.cpp)
-target_link_libraries(luxlab PRIVATE fmt::fmt-header-only)
+target_link_libraries(luxlab PRIVATE fmt::fmt-header-only nlohmann_json::nlohmann_json)
 target_include_directories(luxlab PRIVATE include)

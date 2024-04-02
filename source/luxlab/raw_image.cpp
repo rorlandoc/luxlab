@@ -1,8 +1,9 @@
-#include "luxlab/raw_image.hpp"
+#include <fstream>
 
 #include <fmt/format.h>
+#include <nlohmann/json.hpp>
 
-#include <fstream>
+#include "luxlab/raw_image.hpp"
 
 namespace luxlab {
 
@@ -101,6 +102,13 @@ void RawImage::dump_hex() const {
             ++line_counter;
         }
     }
+}
+
+void to_json(nlohmann::json& j, const RawImage& raw_image) {
+    j = nlohmann::json{{"path", raw_image.path().string()},
+                       {"size", raw_image.size()},
+                       {"header", raw_image.header()},
+                       {"ifds", raw_image.ifds()}};
 }
 
 }  // namespace luxlab

@@ -2,6 +2,7 @@
 #define LUXLAB_TAG_HPP
 
 #include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 namespace luxlab {
 
@@ -149,6 +150,8 @@ class Tag {
    private:
     Type m_type;
 };
+
+void to_json(nlohmann::json& j, const Tag& tag);
 
 }  // namespace luxlab
 
