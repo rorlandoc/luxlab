@@ -3,11 +3,11 @@
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
 
-#include "luxlab/raw_image.hpp"
+#include "luxlab/reader.hpp"
 
 namespace luxlab {
 
-RawImage::RawImage(const std::filesystem::path& file_path) {
+Reader::Reader(const std::filesystem::path& file_path) {
     // check if file exists
     if (!std::filesystem::exists(file_path)) {
         fmt::print("ERROR: file {} does not exist\n", file_path.string());
@@ -53,7 +53,7 @@ RawImage::RawImage(const std::filesystem::path& file_path) {
     }
 }
 
-void RawImage::dump_hex() const {
+void Reader::dump_hex() const {
     // create hex file path from image file path
     std::filesystem::path hex_file = m_path;
     hex_file.replace_extension(".hex");
@@ -104,25 +104,25 @@ void RawImage::dump_hex() const {
     }
 }
 
-void to_json(nlohmann::json& j, const RawImage& raw_image) {
-    j = nlohmann::json{{"path", raw_image.path().string()},
-                       {"size", raw_image.size()},
-                       {"header", raw_image.header()},
-                       {"ifds", raw_image.ifds()}};
+void to_json(nlohmann::json& j, const Reader& reader) {
+    j = nlohmann::json{{"path", reader.path().string()},
+                       {"size", reader.size()},
+                       {"header", reader.header()},
+                       {"ifds", reader.ifds()}};
 }
 
 }  // namespace luxlab
 
 namespace fmt {
 
-format_context::iterator formatter<luxlab::RawImage>::format(
-    const luxlab::RawImage& raw_image, format_context& ctx) const {
+format_context::iterator formatter<luxlab::Reader>::format(const luxlab::Reader& reader,
+                                                           format_context& ctx) const {
     std::string str = "";
     str += fmt::format("Raw image\n");
-    str += fmt::format("|  Path: {}\n", raw_image.path().string());
-    str += fmt::format("|  Size: {} bytes\n", raw_image.size());
-    str += fmt::format("{:1}\n", raw_image.header());
-    for (const auto& ifd : raw_image.ifds()) {
+    str += fmt::format("|  Path: {}\n", reader.path().string());
+    str += fmt::format("|  Size: {} bytes\n", reader.size());
+    str += fmt::format("{:1}\n", reader.header());
+    for (const auto& ifd : reader.ifds()) {
         str += fmt::format("{:1}\n", ifd);
     }
     return formatter<std::string>::format(str, ctx);

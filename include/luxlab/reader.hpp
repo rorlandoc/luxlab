@@ -1,5 +1,5 @@
-#ifndef LUXLAB_RAW_IMAGE_HPP
-#define LUXLAB_RAW_IMAGE_HPP
+#ifndef LUXLAB_READER_HPP
+#define LUXLAB_READER_HPP
 
 #include <cstddef>
 #include <filesystem>
@@ -13,9 +13,9 @@
 
 namespace luxlab {
 
-class RawImage {
+class Reader {
    public:
-    RawImage(const std::filesystem::path &file_path);
+    Reader(const std::filesystem::path &file_path);
 
     inline const std::filesystem::path &path() const { return m_path; }
     inline const std::vector<std::byte> &data() const { return m_data; }
@@ -33,18 +33,18 @@ class RawImage {
     TIFFHeader m_header;
 };
 
-void to_json(nlohmann::json &j, const RawImage &raw_image);
+void to_json(nlohmann::json &j, const Reader &reader);
 
 }  // namespace luxlab
 
 namespace fmt {
 
 template <>
-struct formatter<luxlab::RawImage> : formatter<std::string> {
-    format_context::iterator format(const luxlab::RawImage &raw_image,
+struct formatter<luxlab::Reader> : formatter<std::string> {
+    format_context::iterator format(const luxlab::Reader &reader,
                                     format_context &ctx) const;
 };
 
 }  // namespace fmt
 
-#endif  // !LUXLAB_RAW_IMAGE_HPP
+#endif  // !LUXLAB_READER_HPP
