@@ -26,7 +26,7 @@ add_executable(luxlab
   include/luxlab/directory_entry.hpp
   include/luxlab/ifd.hpp
   include/luxlab/tiff_header.hpp
-  include/luxlab/raw_image.hpp
+  include/luxlab/reader.hpp
 
   source/luxlab/tag_data_format.cpp
   source/luxlab/tag.cpp
@@ -34,7 +34,7 @@ add_executable(luxlab
   source/luxlab/directory_entry.cpp
   source/luxlab/ifd.cpp
   source/luxlab/tiff_header.cpp
-  source/luxlab/raw_image.cpp
+  source/luxlab/reader.cpp
 
   source/luxlab.cpp)
 target_link_libraries(luxlab PRIVATE fmt::fmt-header-only nlohmann_json::nlohmann_json)
